@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>bill-page</title>
+
+    <script type="text/javascript">
+        function loadXMLDoc(){
+            var xmlhttp;
+                //alert("loadXMLDoc！");
+            if (window.XMLHttpRequest) {
+                //alert("xmlhttp ok！");
+                // IE7+, Firefox, Chrome, Opera, Safari 浏览器执行代码
+                xmlhttp=new XMLHttpRequest();
+            }else{
+                // IE6, IE5 浏览器执行代码
+                xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+            }
+            xmlhttp.onreadystatechange = function(){
+                if (xmlhttp.readState == 4 && xmlhttp.status == 200) {
+                    alert("success!");
+                }
+            };
+            xmlhttp.open("GET","http://192.168.1.100:8081/bill/result",true);
+            //xmlhttp.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+            xmlhttp.send();
+
+        }
+        loadXMLDoc();
+
+    </script>
+</head>
+<body>
+
+    <input type="button" name="xml" value="test" onclick="loadXMLDoc()">
+
+<table bgcolor="#faebd7" border="1">
+    <tr>
+        <th>id</th>
+        <th>store</th>
+        <th>products</th>
+        <th>number</th>
+        <th>price</th>
+        <th>paytool</th>
+        <th>time</th>
+    </tr>
+    <tr th:each="item:${bill}">
+        <td th:text="${item.id}"></td>
+        <td th:text="${item.store}"></td>
+        <td th:text="${item.products}"></td>
+        <td th:text="${item.number}"></td>
+        <td th:text="${item.price}"></td>
+        <td th:text="${item.paytool}"></td>
+        <td th:text="${#dates.format(item.time, 'yyyy-MM-dd HH:mm:ss')}"></td>
+    </tr>
+</table>
+<div style="width: 500px;background-color:#fff;text-align: right;line-height: 30px">
+    <br><br>
+    <form action="http://localhost:8081/bill/add" method="post">
+        <div style="width: 400px;background-color:#fff;">
+            store:<input type="text" name="store"><br>
+            product:<input type="text" name="product"><br>
+            number:<input type="number" name="number"><br>
+            price:<input type="number" name="price"><br>
+            paytool:<input type="text" name="paytool"><br>
+            time:<input type="text" name="time"><br>
+            <input type="submit" value="添加"><br>
+        </div>
+    </form>
+</div>
+<br><br><br><br>
+<div style="background-color:#fff;text-align:center;height: 500px;width:500px;">space</div>
+</body>
+</html>
